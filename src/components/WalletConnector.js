@@ -35,12 +35,16 @@ function WalletConnector(props) {
     }
 
     const walletListener = async () =>{
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        if(window.ethereum) {
+            var instance = window.ethereum;
+        }
+        const provider = new ethers.providers.Web3Provider(instance);
         const accounts = await provider.listAccounts();
         const network = await provider.getNetwork();
 
         if(accounts)
             setAddress(accounts[0]);
+        setInstance(instance);
         setProvider(provider);
         setChainId(Number(network.chainId));
     }
@@ -77,7 +81,7 @@ function WalletConnector(props) {
     }
     const refresh = () => {
         setProvider();
-        setAddress();
+        setAddress(undefined);
         setChainId();
     }
 
@@ -118,8 +122,9 @@ function WalletConnector(props) {
     }, [instance]);
 
     return (
+
         <div className={'m-4'}>
-            <button className={'button'} onClick={connectWallet}>
+            <button className={'button p-3'} onClick={connectWallet}>
                 {
                     address ? (
                         String(address).substring(0, 6) +
@@ -131,18 +136,20 @@ function WalletConnector(props) {
                 }
 
             </button>
-            <div>
-                <p className={'m-2'}>You are currently connected to: </p>
-                <select placeholder={'Select..'} onChange={handleNetwork} className={'text-center m-2 button'} value={chainId}>
-                    <option value={'4'}>Rinkeby</option>
-                    <option value={'80001'}>Mumbai</option>
-                    <option value={'97'}>BSC Test Chain</option>
-                </select>
-                <button onClick={switchNetwork} className={'m-2 button'}>
-                    Switch Network
-                </button>
-            </div>
-
+            {address ? (
+                <div>
+                    <p className={'m-2'}>You are currently connected to: </p>
+                    <select placeholder={'Select..'} onChange={handleNetwork}
+                            className={'text-center m-2 button px-4 py-3'} value={chainId}>
+                        <option value={'4'}>Rinkeby</option>
+                        <option value={'80001'}>Mumbai</option>
+                        <option value={'97'}>BSC Test Chain</option>
+                    </select>
+                    <button onClick={switchNetwork} className={'m-2 button p-3'}>
+                        Switch Network
+                    </button>
+                </div>) : (<div></div>)
+            }
 
         </div>
     );

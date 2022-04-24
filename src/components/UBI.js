@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ethers} from "ethers";
 
 function Ubi(props) {
@@ -9,13 +9,21 @@ function Ubi(props) {
     //TODO: ADD CONTRACT INFO
     // const contract =
 
-    //TODO: COMPLETE FUNCTIONS
-    const buySubscription = async () => {
+    const [subscribed, setSubscribed] = useState(false);
+    const [tokensToClaim, setTokensToClaim] = useState(0);
+    const [donationAmount, setDonationAmount] = useState(0);
 
+    //TODO: COMPLETE FUNCTIONS
+    const cancelSubscription = async () => {
+        await setSubscribed(false);
+    }
+
+    const buySubscription = async () => {
+        await setSubscribed(true);
     }
 
     const donate = async () => {
-
+        await console.log(donationAmount);
     }
 
     const claim = async () => {
@@ -25,9 +33,24 @@ function Ubi(props) {
     return (
         <div>
             <div className={'m-4'}>
-                <button onClick={buySubscription} className={'button p-4'}>buy_subscription</button>
-                <button onClick={donate} className={'button p-4'}>donate_tokens</button>
-                <button onClick={claim} className={'button p-4'}>claim_tokens</button>
+                {
+                    subscribed === false ? (
+                            <div>
+                                <button onClick={buySubscription} className={'button p-4'}>get_subscription</button>
+                                <button onClick={claim} className={'button p-4'}>claim_tokens</button>
+                                <p className={'my-4'}>The amount of tokens ready to be claimed is: {tokensToClaim}</p>
+                            </div>
+
+                    ) : (
+                        <button onClick={cancelSubscription} className={'button p-4'}>cancel_subscription</button>
+                    )
+                }
+
+                <div className={'flex flex-col items-center'}>
+                    <button onClick={donate} className={'button p-4'}>donate_tokens</button>
+                    <input type={"number"} step={"0.01"} placeholder={'0'} min={0} className={'p-2 text-center'} onChange={(event) => {setDonationAmount(event.target.value)}}/>
+                </div>
+
             </div>
             <p className={'my-1'}>
                 Contract address: {contractAddress}
