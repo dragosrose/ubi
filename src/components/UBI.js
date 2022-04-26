@@ -1,17 +1,20 @@
 import React, {useState} from 'react';
 import {ethers} from "ethers";
+import UBI from "../contract/UBI.json";
+import {parseEther} from "ethers/lib/utils";
 
 function Ubi(props) {
 
-    const contractAddress = 'INSERT_CONTRACT_ADDRESS';
+    const contractAddress = "0xa53c232aE15e67D7c25CecB6f4E4bd8470b7A136";;
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
-    //TODO: ADD CONTRACT INFO
-    // const contract =
+
+    const contract =  new ethers.Contract(contractAddress, UBI.abi, signer).connect(signer);
 
     const [subscribed, setSubscribed] = useState(false);
     const [tokensToClaim, setTokensToClaim] = useState(0);
     const [donationAmount, setDonationAmount] = useState(0);
+
 
     //TODO: COMPLETE FUNCTIONS
     const cancelSubscription = async () => {
@@ -23,7 +26,7 @@ function Ubi(props) {
     }
 
     const donate = async () => {
-        await console.log(donationAmount);
+        return await contract.donate({value: parseEther(donationAmount.toString())});
     }
 
     const claim = async () => {
