@@ -22,9 +22,8 @@ function App() {
             </main>
 
             <footer className={'border-b-2 sm:border-2 shadow text-center my-4 bg-white'}>
-                <p className={'my-2'}>❤️ Made by <a className={'underline'} href={'https://github.com/nomoney34'}>Dragos Trandafir</a>
-                         <span> and </span>
-                    <a className={'underline'} href={'https://github.com/PetrisorTanasa'}>Petrisor Tanasa</a> with love. ❤️
+                <p className={'my-2'}>❤️ Made by <a className={'underline'} href={'https://github.com/nomoney34'}>Dragos Trandafir</a> with love. ❤️
+
                 </p>
             </footer>
         </div>
